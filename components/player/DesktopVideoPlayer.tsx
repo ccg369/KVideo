@@ -109,7 +109,33 @@ export function DesktopVideoPlayer({
 
       <DesktopOverlayWrapper
         state={state}
+        showControls={state.showControls}
         onTogglePlay={togglePlay}
+        onSkipForward={logic.skipForward}
+        onSkipBackward={logic.skipBackward}
+        // More Menu Props
+        showMoreMenu={state.showMoreMenu}
+        isProxied={src.includes('/api/proxy')}
+        onToggleMoreMenu={() => state.setShowMoreMenu(!state.showMoreMenu)}
+        onMoreMenuMouseEnter={() => {
+          if (refs.moreMenuTimeoutRef.current) {
+            clearTimeout(refs.moreMenuTimeoutRef.current);
+          }
+        }}
+        onMoreMenuMouseLeave={() => {
+          refs.moreMenuTimeoutRef.current = setTimeout(() => {
+            state.setShowMoreMenu(false);
+          }, 300);
+        }}
+        onCopyLink={logic.handleCopyLink}
+        // Speed Menu Props
+        playbackRate={state.playbackRate}
+        showSpeedMenu={state.showSpeedMenu}
+        speeds={[0.5, 0.75, 1, 1.25, 1.5, 2]}
+        onToggleSpeedMenu={() => state.setShowSpeedMenu(!state.showSpeedMenu)}
+        onSpeedChange={logic.changePlaybackSpeed}
+        onSpeedMenuMouseEnter={logic.clearSpeedMenuTimeout}
+        onSpeedMenuMouseLeave={logic.startSpeedMenuTimeout}
       />
 
       <DesktopControlsWrapper
